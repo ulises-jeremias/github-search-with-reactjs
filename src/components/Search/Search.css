@@ -1,0 +1,21 @@
+#github_search {
+  max-width: 720px;
+  text-align: center;
+  display: block;
+  margin: 120px auto 0;
+}
+
+#github_search_header {
+    padding: 35px 15px 10px;
+    font-size: xx-large;
+    font-weight: 200;
+}
+
+#github_search_section {
+    padding: 10px 100px;
+}
+
+#github_search_footer {
+  padding: 15px 100px 35px;
+  text-align: right;
+}
