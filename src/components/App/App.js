@@ -2,7 +2,6 @@ import React, {
   Component
 } from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import { Link } from 'react-router'
 import TopNav from '../TopNav'
 
 /*

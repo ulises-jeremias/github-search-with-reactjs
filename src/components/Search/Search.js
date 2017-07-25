@@ -1,9 +1,9 @@
 import React, {
   Component
 } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
-import { Paper, TextField, RaisedButton, FontIcon } from 'material-ui'
+import { Paper, TextField, FloatingActionButton } from 'material-ui'
+import FaSearch from 'react-icons/lib/fa/search'
 import './Search.css'
 
 const history = createBrowserHistory()
@@ -19,9 +19,13 @@ class Search extends Component {
         }
     }
 
-    handleSubmit() {
+    handleSubmit(e) {
+      e.preventDefault()
       var { username } = this.state
-      history.push(`/user/${username}`)
+      if (username) {
+        history.push(`/user/${username}`)
+        window.location.reload()
+      }
     }
 
     handleChange = property => event => {
@@ -34,25 +38,27 @@ class Search extends Component {
     render() {
       return (
         <div id="github_search">
-          <Paper>
-            <header id="github_search_header">Enter a github username</header>
-            <section id="github_search_section">
-              <TextField
-                id="username"
-                floatingLabelText="Username"
-                fullWidth={true}
-                value={this.state.username}
-                onChange={this.handleChange("username")}
-              />
-            </section>
-            <footer id="github_search_footer">
-              <RaisedButton
-                onClick={this.handleSubmit}
-                secondary={true}
-                label="Search"
-              />
-            </footer>
-          </Paper>
+          <form onSubmit={this.handleSubmit}>
+            <Paper zDepth={2}>
+              <header id="github_search_header">Enter a github username</header>
+              <section id="github_search_section">
+                <TextField
+                  id="username"
+                  floatingLabelText="Username"
+                  fullWidth={true}
+                  value={this.state.username}
+                  onChange={this.handleChange("username")}
+                />
+              </section>
+              <footer id="github_search_footer">
+                <FloatingActionButton
+                  onClick={this.handleSubmit}
+                  secondary={true}
+                  children={<FaSearch/>}
+                />
+              </footer>
+            </Paper>
+          </form>
         </div>
       )
     }

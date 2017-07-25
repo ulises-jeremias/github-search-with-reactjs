@@ -1,33 +1,33 @@
 import React, {
   Component
 } from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import { createBrowserHistory } from 'history'
-import CircularProgress from 'material-ui/CircularProgress'
+import { Link } from 'react-router-dom'
 import Avatar from 'material-ui/Avatar'
-import UserStats from '../UserStats'
+import CircularProgress from 'material-ui/CircularProgress'
+import Divider from 'material-ui/Divider'
+import MdSupervisorAccount from 'react-icons/lib/md/supervisor-account'
+import Paper from 'material-ui/Paper'
+import Stats from '../Stats'
+import Tag from '../Tag'
 import './User.css'
 
 
-const history = createBrowserHistory()
 
 class User extends Component {
   constructor(props) {
     super(props)
-    this.state = {};
+    this.state = {}
   }
 
   componentWillMount() {
     fetch(`https://api.github.com/users/${this.props.match.params.username}`)
         .then(response => response.json())
-        .then(
-            user => {
-              console.log(user)
-                this.setState({
-                    user: user
-                });
-            }
-        )
+        .then(user => {
+          console.log(user)
+            this.setState({
+                user: user
+            })
+        })
   }
 
   render() {
@@ -38,14 +38,15 @@ class User extends Component {
         <div className="user-page">
           <CircularProgress />
         </div>
-      );
+      )
     }
 
     // If we get to this part of `render`, then the user is loaded
-    const user = this.state.user;
+    const user = this.state.user
 
     // Gather up some number stats about the user, to be used in a map below
-    const stats = [{
+    const stats = [
+      {
         name: 'Public Repos',
         value: user.public_repos,
         url: `/user/${this.props.match.params.username}/repos`
@@ -60,22 +61,41 @@ class User extends Component {
         value: user.following,
         url: `/user/${this.props.match.params.username}/following`
       }
-    ];
+    ]
 
     return (
       <div className="user-page">
-         <div className="user-info">
-           <Avatar
-              className="user-info__avatar"
-              src={user.avatar_url}
-              size={250}
-           />
-           <Link className="user-info__text" to={`/user/${user.login}`}>
-               <h2 className="user-info__title">{user.login} ({user.name})</h2>
-               <p className="user-info__bio">{user.bio}</p>
-           </Link>
-           <UserStats stats={stats}/>
-         </div>
+         <Paper>
+           <div className="user-info">
+             <Avatar
+                className="user-info-avatar"
+                src={user.avatar_url}
+                size={250}
+                alt={`${user.login} avatar`}
+             />
+             <div className="user-info-text">
+                <h2>{user.name}</h2>
+               <Link
+                  target="_blanck"
+                  to={`https://github.com/${user.login}`}
+                >
+                <h3 className="user-info-title">@{user.login}</h3>
+               </Link>
+               <Divider />
+               <br />
+               <div className="user-tags">
+                 <Tag
+                    content={user.company}
+                    icon={<MdSupervisorAccount></MdSupervisorAccount>}
+                 >
+                 </Tag>
+               </div>
+               <p className="user-info-bio">{user.bio}</p>
+             </div>
+             <Divider />
+             <Stats stats={stats}/>
+           </div>
+         </Paper>
      </div>
     )
   }
